@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <style>
+        body{
+          background-color :black; 
+        }
+          #p {
+        padding-top : 20%;
+        font-size: 40px;
+        text-align: center;
+        width: 100%;
+      }
+      #e {
+        padding-top : 20%;
+        text-align: center;
+        width: 100%;
+      }
+      #timer_container {
+        padding-top : 20%;
+        text-align: center;
+        font-size: 40px;
+        width: 100%;
+      }
+      .flexbox {
+        display: flex;
+        flex-direction: row;
+        width:100%;
+        font-family: 'Montserrat', sans-serif;
+
+
+      }
+      .box {
+         width: 100%;
+         padding-right: 10%;
+         text-align : center;
+          }
+      
+      .odometer.odometer-auto-theme, .odometer.odometer-theme-default {
+        display: inline-block;
+        vertical-align: middle;
+        *vertical-align: auto;
+        *zoom: 1;
+        *display: inline;
+        position: relative;
+      }
+      .odometer.odometer-auto-theme .odometer-digit, .odometer.odometer-theme-default .odometer-digit {
+        display: inline-block;
+        vertical-align: middle;
+        *vertical-align: auto;
+        *zoom: 1;
+        *display: inline;
+        position: relative;
+      }
+      .odometer.odometer-auto-theme .odometer-digit .odometer-digit-spacer, .odometer.odometer-theme-default .odometer-digit .odometer-digit-spacer {
+        display: inline-block;
+        vertical-align: middle;
+        *vertical-align: auto;
+        *zoom: 1;
+        *display: inline;
+        visibility: hidden;
+      }
+      .odometer.odometer-auto-theme .odometer-digit .odometer-digit-inner, .odometer.odometer-theme-default .odometer-digit .odometer-digit-inner {
+        text-align: left;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+      }
+      .odometer.odometer-auto-theme .odometer-digit .odometer-ribbon, .odometer.odometer-theme-default .odometer-digit .odometer-ribbon {
+        display: block;
+      }
+      .odometer.odometer-auto-theme .odometer-digit .odometer-ribbon-inner, .odometer.odometer-theme-default .odometer-digit .odometer-ribbon-inner {
+        display: block;
+        -webkit-backface-visibility: hidden;
+      }
+      .odometer.odometer-auto-theme .odometer-digit .odometer-value, .odometer.odometer-theme-default .odometer-digit .odometer-value {
+        display: block;
+        -webkit-transform: translateZ(0);
+      }
+      .odometer.odometer-auto-theme .odometer-digit .odometer-value.odometer-last-value, .odometer.odometer-theme-default .odometer-digit .odometer-value.odometer-last-value {
+        position: absolute;
+      }
+      .odometer.odometer-auto-theme.odometer-animating-up .odometer-ribbon-inner, .odometer.odometer-theme-default.odometer-animating-up .odometer-ribbon-inner {
+        -webkit-transition: -webkit-transform 2s;
+        -moz-transition: -moz-transform 2s;
+        -ms-transition: -ms-transform 2s;
+        -o-transition: -o-transform 2s;
+        transition: transform 2s;
+      }
+      .odometer.odometer-auto-theme.odometer-animating-up.odometer-animating .odometer-ribbon-inner, .odometer.odometer-theme-default.odometer-animating-up.odometer-animating .odometer-ribbon-inner {
+        -webkit-transform: translateY(-100%);
+        -moz-transform: translateY(-100%);
+        -ms-transform: translateY(-100%);
+        -o-transform: translateY(-100%);
+        transform: translateY(-100%);
+      }
+      .odometer.odometer-auto-theme.odometer-animating-down .odometer-ribbon-inner, .odometer.odometer-theme-default.odometer-animating-down .odometer-ribbon-inner {
+        -webkit-transform: translateY(-100%);
+        -moz-transform: translateY(-100%);
+        -ms-transform: translateY(-100%);
+        -o-transform: translateY(-100%);
+        transform: translateY(-100%);
+      }
+      .odometer.odometer-auto-theme.odometer-animating-down.odometer-animating .odometer-ribbon-inner, .odometer.odometer-theme-default.odometer-animating-down.odometer-animating .odometer-ribbon-inner {
+        -webkit-transition: -webkit-transform 2s;
+        -moz-transition: -moz-transform 2s;
+        -ms-transition: -ms-transform 2s;
+        -o-transition: -o-transform 2s;
+        transition: transform 2s;
+        -webkit-transform: translateY(0);
+        -moz-transform: translateY(0);
+        -ms-transform: translateY(0);
+        -o-transform: translateY(0);
+        transform: translateY(0);
+      }
+      
+      .odometer.odometer-auto-theme, .odometer.odometer-theme-default {
+        font-family: "Helvetica Neue", sans-serif;
+        line-height: 1.1em;
+      }
+      .odometer.odometer-auto-theme .odometer-value, .odometer.odometer-theme-default .odometer-value {
+        text-align: center;
+      }
+         
+          </style>
+      
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Treadhill</title>
+    <!-- Bootstrap and libraries -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  </head>
+  <body style="background-color:rgb(7, 7, 6); color: #170e53">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="/" style="color: white">Treadhill</a>
+            </div>
+            <a class="navbar-brand navbar-right" href="/" style="color:white">Welcome, Anshul</a>
+          </div>  <!-- Collect the nav links, forms, and other content for toggling -->
+      </div>
+    </div>
+
+    <!-- padding -->
+    <div style="height: 90px"></div>
+
+    <!-- buttons -->
+    <div class="btn-group" role="group" style="left:80%;top:300px;padding-left: 15px">
+      <button class="btn btn-default btn-lg" id="changeButton">start</button>
+      <button class="btn btn-default btn-lg" id="resetButton" onclick="reset()">reset</button>
+    </div>
+
+    <div class="container-fluid">
+      <!-- Example row of columns -->
+      <div class="row">
+        <!-- chart1 - rest, walk, fast_walk -->
+        <div class="container-fluid" id="data-container"></div>
+        <!-- chart2 - energy(e) -->
+        <div class="container-fluid" id="data-container2"></div>
+        <!-- websocket code -->
+        
+    <video width="900" height="400" controls>
+      <source src="/static/wk1.mp4" type="video/mp4">
+    </video>
+    
+        <div class="wrapper" style="position: relative; padding-left:3%;width:1000px; height: 300px;">
+          <div class="flexbox">
+            <div class="box">
+              <div id="g2" class="gauge"></div>
+              HR
+            </div>
+            <div class="box">
+            <div id="g3" class="gauge"></div>
+            Max Heart Rate
+          </div>
+            <div class="box">
+                <div id ="p" class="odometer">0</div> 
+                Calories
+            </div>
+            <div class="box">
+                <h4><div id ="e" >Reach Down and Up</div></h4>
+                Up Next
+            </div>
+            <div class="box">
+            <h4><div id="timer_container"></div></h4>
+            Time Left
+            </div>
+            </div>
+          </div>
+          <div id="e"> </div>
+    
+            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+          
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.1/raphael-min.js">
+            </script>
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.9/justgage.js">
+            </script>
+            <script src="/static/js/ch.js"></script>
+            <script src="/static/js/timer.js"></script>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.6/odometer.js"></script>
+        <script type="text/javascript">
+          document.addEventListener(
+            'DOMContentLoaded', 
+            function() {
+            var sock = io.connect('http://localhost:8000');
+
+            sock.on('draw', function(data){
+              if($('#changeButton').html() == 'stop'){
+                // get data
+                rest = data['rest_time'];
+                walk = data['walk_time'];
+                fast_walk = data['fast_walk_time'];
+                e = data['e'];
+                console.log(e);
+                // updating chart (live)
+              setInterval(g2.refresh(data['e']),1000);
+              setInterval(g3.refresh(parseInt((data['e']-70)/130*100)),1000);
+
+              }
+            });
+            // change mode
+            $('#changeButton').on('click', function(){
+              // change mode: stop -> start
+              if($('#changeButton').html() == 'start'){
+                $('#changeButton').html('stop');
+                sock.emit('change mode', {'mode': 'start'});
+              }
+              // change mode: start -> stop
+              else{
+                $('#changeButton').html('start');
+                sock.emit('change mode', {'mode': 'stop'});
+              }
+            });
+          });
+            
+            document.addEventListener(
+              'DOMContentLoaded', 
+              function() {
+                var i = document.getElementById("p");
+              var j = 1;
+              i.innerHTML = j;
+            setInterval(function(){
+                j = j+ 0.5;
+                i.innerHTML = j;
+            }, 20000);
+            }, false);
+
+            document.addEventListener(
+              'DOMContentLoaded', 
+              function() {
+              var c = 1;
+              var d = 1;
+              var r = document.getElementById("e");
+            setInterval(function(){
+                c = c+1
+                r.innerHTML = wk1[c][2];
+                timer(wk1[c][1]);
+            }, wk1[c][1]*1000);
+            }, false);
+
+            function timer(i) {
+              var s = document.getElementById("timer_container");
+              var d = setInterval(function(){
+                i = i - 1;
+                if(i>0)
+            {    s.innerHTML = i;}
+                }, 1000);
+            }
+
+
+
+        </script>
+      </div>
+    </div>
+  </body>
+</html>
